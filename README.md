@@ -12,7 +12,7 @@ Run the below commands to download the demo repository and run Prometheus and Gr
 git clone git@github.com:hiepdng/monitoring_metrics_with_prometheus_grafana.git
 
 #Creating volumes
-cd monitoring_metrics_with_prometheus_grafana
+cd monitoring_traces_with_alloy_tempo_grafana
 mkdir grafana_data
 sudo chown -R 472:472 grafana_data
 mkdir alloy_data
