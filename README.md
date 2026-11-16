@@ -13,10 +13,12 @@ git clone git@github.com:hiepdng/monitoring_metrics_with_prometheus_grafana.git
 
 #Creating volumes
 cd monitoring_metrics_with_prometheus_grafana
-mkdir prometheus_data
-sudo chown -R nobody:nogroup prometheus_data
 mkdir grafana_data
 sudo chown -R 472:472 grafana_data
+mkdir alloy_data
+sudo chown -R 473:473 alloy_data
+mkdir tempo_data
+sudo chown -R 10001:10001 tempo_data
 
 #Running containers
 docker compose up -d
