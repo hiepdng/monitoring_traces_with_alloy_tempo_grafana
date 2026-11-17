@@ -3,7 +3,7 @@
 
 Below is the complete setup how to use Grafana Alloy, Grafana Tempo and Grafana to creates a complete, end-to-end distributed tracing stack to monitor, collect, store, and visualize the journey of requests across microservices.   
 
-To simplify the setup, I use docker images to demotrate traces.  
+To simplify the setup, I use docker images to demotrate traces in Grafana webpage.  
 
 **Setup**  
 Run the below commands to download the demo repository and run Alloy, Tempo and Grafana.  
