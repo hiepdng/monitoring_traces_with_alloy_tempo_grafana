@@ -34,7 +34,7 @@ To view specific container webpages:
 To view traces page:  
 - goto http://localhost:3000/
 - Click on `Drilldown` ->`Traces`
-- Make sure select Tempo as data source
+- Make sure select `Tempo` as `Data source`
 
 
 
