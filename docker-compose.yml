@@ -1,1 +1,60 @@
-f
+networks:
+  monitoring:
+    driver: bridge
+    
+services:
+  grafana:
+    image: grafana/grafana-enterprise:13.0.12-ubuntu
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+      - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    ports:
+      - 3000:3000
+
+  alloy:
+    image: grafana/alloy:v1.21.3
+    container_name: alloy
+    restart: unless-stopped
+    volumes:
+      - ./config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./alloy_data:/var/lib/alloy/data
+      - /var/log:/var/log:ro
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+    ports:
+      - 12345:12345
+      - 4319:4319
+
+  tempo:
+    image: grafana/tempo:2.10.4
+    container_name: tempo
+    restart: unless-stopped
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - ./tempo_data:/var/tempo
+    command: ["-config.file=/etc/tempo.yaml"]
+    ports:
+      # Tempo API and query frontend
+      - "3200:3200"
+      # OpenTelemetry gRPC
+      - "4317:4317"
+
+  # Generate fake traces...
+  k6-tracing:
+    image: ghcr.io/grafana/xk6-client-tracing:v0.0.7
+    environment:
+      - ENDPOINT=alloy:4317
+    restart: always
+    depends_on:
+      - tempo
+      - alloy
